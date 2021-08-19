@@ -90,7 +90,7 @@ def train():
     filename = 'randomForest_model.sav'
     joblib.dump(clf, filename)
 
-    return model, acc, y_pred
+    return filename, acc, y_pred
 
 
 if __name__ == "__main__": 
