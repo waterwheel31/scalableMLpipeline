@@ -48,45 +48,53 @@ def process_data(inputData, categorical_features, label, training=True, encoder=
 
 
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
-train, test = train_test_split(data, test_size=0.20)
 
-cat_features = [
-    "workclass",
-    "education",
-    "marital-status",
-    "occupation",
-    "relationship",
-    "race",
-    "sex",
-    "native-country",
-]
+def train():
 
-X_train, y_train, encoder, lb = process_data(
-    train, categorical_features=cat_features, label="salary", training=True
-)
+    train, test = train_test_split(data, test_size=0.20)
 
-# Proces the test data with the process_data function.
+    cat_features = [
+        "workclass",
+        "education",
+        "marital-status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "native-country",
+    ]
 
-X_test, y_test, encoder, lb = process_data(
-    test, categorical_features=cat_features, label="salary", training=False,\
-    encoder=encoder, lb=lb
-)
+    X_train, y_train, encoder, lb = process_data(
+        train, categorical_features=cat_features, label="salary", training=True
+    )
 
-# Train and save a model.
+    # Proces the test data with the process_data function.
 
-clf = RandomForestClassifier(max_depth=3, random_state=10)
+    X_test, y_test, encoder, lb = process_data(
+        test, categorical_features=cat_features, label="salary", training=False,\
+        encoder=encoder, lb=lb
+    )
 
-clf.fit(X_train, y_train)
+    # Train and save a model.
 
-y_pred = clf.predict(X_test)
+    clf = RandomForestClassifier(max_depth=3, random_state=10)
 
-acc = np.sum(y_test ==  y_pred) / len(y_pred)
+    clf.fit(X_train, y_train)
 
-print('accuracy:', acc)
+    y_pred = clf.predict(X_test)
 
-filename = 'randomForest_model.sav'
-joblib.dump(clf, filename)
+    acc = np.sum(y_test ==  y_pred) / len(y_pred)
+
+    print('accuracy:', acc)
+
+    filename = 'randomForest_model.sav'
+    joblib.dump(clf, filename)
+
+    return model, acc, y_pred
 
 
+if __name__ == "__main__": 
+
+    train()
 
 
