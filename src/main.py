@@ -1,10 +1,27 @@
-# Put the code for your API here.
+
+
+import sys, os
+from fastapi.testclient import TestClient
+
+module_dir = os.getenv( 'MY_MODULE_PATH', default=os.getcwd() )
+sys.path.append( module_dir )
+
 
 from fastapi import FastAPI 
 from pydantic import BaseModel, Field
 from sklearn.ensemble import RandomForestClassifier
 import joblib
 import numpy as np
+import pandas as pd 
+from src.train_model import slicePredict, predict
+
+import os
+
+if "DYNO" in os.environ and os.path.isdir(".dvc"):
+    os.system("dvc config core.no_scm true")
+    if os.system("dvc pull") != 0:
+        exit("dvc pull failed")
+    os.system("rm -r .dvc .apt/usr/lib/dvc")
 
 app = FastAPI()
 
@@ -14,19 +31,19 @@ clf = joblib.load(filename)
 
 class singleData(BaseModel): 
     age: int
-    workclass: int
+    workclass: str
     fnlgt: int
-    education: int
+    education: str
     education_num: int = Field(alias="education-num")
-    marital_status: int = Field(alias="marital-status")
-    occupation: int
-    relationship: int
-    race: int
-    sex: int
+    marital_status: str = Field(alias="marital-status")
+    occupation: str
+    relationship: str
+    race: str
+    sex: str
     capital_gain: int = Field(alias="capital-gain")
     capital_loss: int = Field(alias="capital-loss")
     hour_per_week: int = Field(alias="hour-per-week")
-    native_country: int = Field(alias="native-country")
+    native_country: str = Field(alias="native-country")
 
 
 @app.get("/")
@@ -37,17 +54,15 @@ async def welcome():
 @app.post("/")
 async def inference(data: singleData):
 
-    print('data:')
-    print(data.age)
-    inputData = [data.age, data.workclass, data.fnlgt, \
-                 data.education, data.education_num, data.marital_status,\
-                 data.occupation, data.relationship, data.race, \
-                 data.sex, data.capital_gain, data.capital_loss, \
-                 data.hour_per_week, data.native_country
-                ]
-    inputData = np.array(inputData).reshape(1, -1)
+    tempData = data.dict(by_alias=True)
+  
+    columns = tempData.keys()
+    values = tempData.values()
 
-    result = str(clf.predict(inputData)[0])
+    inputData = pd.DataFrame(columns=columns)
+    inputData.loc[0] = values
+
+    result = str(slicePredict(inputData)[0].tolist())
 
     print('result:', result)
     print('inference')

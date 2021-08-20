@@ -27,10 +27,14 @@ cat_features = [
         "native-country",
     ]
 
-def process_data(inputData, categorical_features, label, training=True): 
+def process_data(inputData, categorical_features, label, training=True, process_y=True): 
 
-    y = inputData[label]
+    if process_y:
+        y = inputData[label]
     X = inputData.loc[:, inputData.columns != label]
+
+    print('X:')
+    print(X)
 
     X_encoders = None
     y_encoder = None
@@ -43,24 +47,24 @@ def process_data(inputData, categorical_features, label, training=True):
             X_encoders[feature] = enco
 
         y_encoder = LabelEncoder()
-        y_encoder.fit(y)
+        if process_y: y_encoder.fit(y)
 
         joblib.dump(X_encoders, './encoders/X_encoders.joblib')
         joblib.dump(y_encoder, './encoders/y_encoder.joblib')
     
     else: 
         X_encoders = joblib.load('./encoders/X_encoders.joblib')
-        y_encoder = joblib.load('./encoders/y_encoder.joblib')
+        if process_y: y_encoder = joblib.load('./encoders/y_encoder.joblib')
 
-    y = y_encoder.transform(y)
+    if process_y: y = y_encoder.transform(y)
 
     for feature in categorical_features:
         columnData = X[feature]
         columnData = ["unknown" if x not in X_encoders[feature].classes_ else x for x in columnData]
         X[feature] = X_encoders[feature].transform(columnData)
 
-    return X, y
-
+    if process_y: return X, y
+    else: return X
 
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
 
@@ -79,12 +83,26 @@ def train(data):
 
 def predict(clf, data):
 
+    print(data)
+
     X, y = process_data(\
         data, categorical_features=cat_features, label="salary", training=False)
 
     y_pred = clf.predict(X)
 
     return y_pred
+
+def slicePredict(data): 
+    
+    clf = joblib.load('./models/randomForest_model.sav')
+
+    X = process_data(data, categorical_features=cat_features, label=None, \
+        training=False, process_y=False )
+
+    y_pred = clf.predict(X)
+
+    return y_pred
+
 
 def evaluate(data, y_pred, label='salary'):
 
