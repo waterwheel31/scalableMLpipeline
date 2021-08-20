@@ -4,8 +4,7 @@ import sys, os
 from fastapi.testclient import TestClient
 
 module_dir = os.getenv( 'MY_MODULE_PATH', default=os.getcwd() )
-sys.path.append( module_dir )
-
+sys.path.append(module_dir + '\src')
 
 from fastapi import FastAPI 
 from pydantic import BaseModel, Field
@@ -13,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 import joblib
 import numpy as np
 import pandas as pd 
-from src.train_model import slicePredict, predict
+from train_model import slicePredict, predict
 
 import os
 
