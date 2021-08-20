@@ -1,8 +1,6 @@
 
 __all__ = [
-    'train',
-    'main'
+    'train'
     ]
 
 from .train_model import train
-from .main import app  

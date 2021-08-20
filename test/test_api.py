@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 module_dir = os.getenv( 'MY_MODULE_PATH', default=os.getcwd() )
 sys.path.append( module_dir )
 
-from src.main import app
+from main import app
 
 client = TestClient(app)
 
