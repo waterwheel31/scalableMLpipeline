@@ -4,23 +4,56 @@ module_dir = os.getenv( 'MY_MODULE_PATH', default=os.getcwd() )
 sys.path.append( module_dir )
 
 import pytest 
-from src.train_model import train
+from src.train_model import train, predict, evaluate, process_data
+
+import pandas as pd
+import numpy as np
+import sklearn
+
+dataPath = 'census_clean.csv'
+data = pd.read_csv(dataPath)
 
 
 def test_test1():
 
-    filename, acc, y_pred = train()
+    trainedModel = train(data)
 
-    assert  0.0 <= acc <= 1.0  
+    assert  isinstance(trainedModel, sklearn.ensemble.RandomForestClassifier)
 
 def test_test2():
 
-    filename, acc, y_pred = train()
+    cat_features = [
+        "workclass",
+        "education",
+        "marital-status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "native-country",
+    ]
 
-    assert filename == 'randomForest_model.sav'
+    X, y =  process_data(\
+        data, categorical_features=cat_features, label="salary", training=False)
+
+    assert len(X.columns) == 14
 
 def test_test3():
 
-    filename, acc, y_pred = train()
+    cat_features = [
+        "workclass",
+        "education",
+        "marital-status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "native-country",
+    ]
 
-    assert len(y_pred) > 0 
+    X, y =  process_data(\
+        data, categorical_features=cat_features, label="salary", training=False)
+
+    zeroOneItem = np.where((y==0) | (y==1))[0]
+    
+    assert len(zeroOneItem) == len(y)

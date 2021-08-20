@@ -3,7 +3,7 @@
 # Script to train machine learning model.
 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, roc_curve, auc
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 # Add the necessary imports for the starter code.
 import pandas as pd 
@@ -93,10 +93,14 @@ def evaluate(data, y_pred, label='salary'):
     y_true = y_encoder.transform(y_true)
 
     acc = accuracy_score(y_true, y_pred)
-    roc = roc_curve(y_true, y_pred)
-    areaUnderCurve = auc(roc[0], roc[1])
+    #roc = roc_curve(y_true, y_pred)
+    #areaUnderCurve = auc(roc[0], roc[1])
 
-    return acc, roc, areaUnderCurve
+    precision = precision_score(y_true, y_pred)
+    recall = recall_score(y_true, y_pred)
+    f1 = f1_score(y_true, y_pred)
+
+    return acc, precision, recall, f1
 
 if __name__ == "__main__": 
 
@@ -104,9 +108,9 @@ if __name__ == "__main__":
     trainedModel = train(train_data)
 
     y_pred = predict(trainedModel, test_data)
-    acc, roc, areaUnderCurve = evaluate(test_data, y_pred)
+    acc, precision, recall, f1 = evaluate(test_data, y_pred)
 
-    print('accuracy:', acc, 'AUC:', areaUnderCurve)
+    print('accuracy:', acc, 'f1:', f1) 
 
 
 

@@ -23,12 +23,15 @@ For additional information see the Model Card paper: https://arxiv.org/pdf/1810.
 
 ## Metrics
 
-- used the accuracy as the metric
+- accuracy
+- precision
+- recall
+- f1 score 
 
 ## Ethical Considerations
 
-- None 
+- There may be some bias since people answered to the Census may not be fully representing the whole population. 
 
 ## Caveats and Recommendations
 
-- None 
+- Since Census is not conducted frequently, the data may not fully represent latest distribution.
