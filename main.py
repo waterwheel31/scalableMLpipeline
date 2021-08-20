@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 import joblib
 import numpy as np
 import pandas as pd 
-from train_model import slicePredict, predict
+from src.train_model import slicePredict, predict
 
 import os
 
