@@ -1,5 +1,3 @@
-
-
 import sys, os
 
 module_dir = os.getenv( 'MY_MODULE_PATH', default=os.getcwd() )

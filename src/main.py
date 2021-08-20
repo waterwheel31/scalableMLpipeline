@@ -8,7 +8,7 @@ import numpy as np
 
 app = FastAPI()
 
-filename = '../randomForest_model.sav'
+filename = 'randomForest_model.sav'
 clf = joblib.load(filename)
 
 '''
