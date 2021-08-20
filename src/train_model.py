@@ -1,6 +1,9 @@
+
+
 # Script to train machine learning model.
 
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, roc_curve, auc
 
 # Add the necessary imports for the starter code.
 import pandas as pd 
@@ -13,47 +16,7 @@ import joblib
 dataPath = 'census_clean.csv'
 data = pd.read_csv(dataPath)
 
-print(data)
-
-def process_data(inputData, categorical_features, label, training=True, encoder=None, lb=None): 
-
-    y = inputData[label]
-    X = inputData.loc[:, inputData.columns != label]
-
-    print(y)
-    print(X)
-
-    if encoder is None:
-        encoder = {}
-        for feature in categorical_features:
-            enco = LabelEncoder()
-            enco.fit(X[feature].append(pd.Series('unknown')))
-            encoder[feature] = enco
-
-    if lb is None:
-        lb = LabelEncoder()
-        lb.fit(y)
-    
-    y = lb.transform(y)
-
-    for feature in categorical_features:
-        columnData = X[feature]
-        columnData = ["unknown" if x not in encoder[feature].classes_ else x for x in columnData]
-        X[feature] = encoder[feature].transform(X[feature])
-
-    print(X[:5])
-    print(y[:50])
-
-    return X, y, encoder, lb
-
-
-# Optional enhancement, use K-fold cross validation instead of a train-test split.
-
-def train():
-
-    train, test = train_test_split(data, test_size=0.20)
-
-    cat_features = [
+cat_features = [
         "workclass",
         "education",
         "marital-status",
@@ -64,37 +27,87 @@ def train():
         "native-country",
     ]
 
-    X_train, y_train, encoder, lb = process_data(
-        train, categorical_features=cat_features, label="salary", training=True
-    )
+def process_data(inputData, categorical_features, label, training=True): 
 
-    # Proces the test data with the process_data function.
+    y = inputData[label]
+    X = inputData.loc[:, inputData.columns != label]
 
-    X_test, y_test, encoder, lb = process_data(
-        test, categorical_features=cat_features, label="salary", training=False,\
-        encoder=encoder, lb=lb
-    )
+    X_encoders = None
+    y_encoder = None
 
-    # Train and save a model.
+    if training:
+        X_encoders = {}
+        for feature in categorical_features:
+            enco = LabelEncoder()
+            enco.fit(X[feature].append(pd.Series('unknown')))
+            X_encoders[feature] = enco
+
+        y_encoder = LabelEncoder()
+        y_encoder.fit(y)
+
+        joblib.dump(X_encoders, './encoders/X_encoders.joblib')
+        joblib.dump(y_encoder, './encoders/y_encoder.joblib')
+    
+    else: 
+        X_encoders = joblib.load('./encoders/X_encoders.joblib')
+        y_encoder = joblib.load('./encoders/y_encoder.joblib')
+
+    y = y_encoder.transform(y)
+
+    for feature in categorical_features:
+        columnData = X[feature]
+        columnData = ["unknown" if x not in X_encoders[feature].classes_ else x for x in columnData]
+        X[feature] = X_encoders[feature].transform(columnData)
+
+    return X, y
+
+
+# Optional enhancement, use K-fold cross validation instead of a train-test split.
+
+def train(data):
+
+    X_train, y_train = process_data(\
+        data, categorical_features=cat_features, label="salary", training=True)
 
     clf = RandomForestClassifier(max_depth=3, random_state=10)
-
     clf.fit(X_train, y_train)
 
-    y_pred = clf.predict(X_test)
-
-    acc = np.sum(y_test ==  y_pred) / len(y_pred)
-
-    print('accuracy:', acc)
-
-    filename = 'randomForest_model.sav'
+    filename = './models/randomForest_model.sav'
     joblib.dump(clf, filename)
 
-    return filename, acc, y_pred
+    return clf 
 
+def predict(clf, data):
+
+    X, y = process_data(\
+        data, categorical_features=cat_features, label="salary", training=False)
+
+    y_pred = clf.predict(X)
+
+    return y_pred
+
+def evaluate(data, y_pred, label='salary'):
+
+    y_encoder = joblib.load('./encoders/y_encoder.joblib')
+    y_true = data[label]
+    y_true = y_encoder.transform(y_true)
+
+    acc = accuracy_score(y_true, y_pred)
+    roc = roc_curve(y_true, y_pred)
+    areaUnderCurve = auc(roc[0], roc[1])
+
+    return acc, roc, areaUnderCurve
 
 if __name__ == "__main__": 
 
-    train()
+    train_data, test_data = train_test_split(data, test_size=0.20)
+    trainedModel = train(train_data)
+
+    y_pred = predict(trainedModel, test_data)
+    acc, roc, areaUnderCurve = evaluate(test_data, y_pred)
+
+    print('accuracy:', acc, 'AUC:', areaUnderCurve)
+
+
 
 
