@@ -11,23 +11,6 @@ app = FastAPI()
 filename = 'randomForest_model.sav'
 clf = joblib.load(filename)
 
-'''
-class singleData(BaseModel): 
-    age: int
-    workclass: int
-    fnlgt: int
-    education: int
-    education_num: int = Field(alias="education-num")
-    marital_status: int = Field(alias="marital-status")
-    occupation: int
-    relationship: int
-    race: int
-    sex: int
-    capital_gain: int = Field(alias="capital-gain")
-    capital_loss: int = Field(alias="capital-loss")
-    hour_per_week: int = Field(alias="hour-per-week")
-    native_country: int = Field(alias="native-country")
-'''
 
 class singleData(BaseModel): 
     age: int
