@@ -100,6 +100,10 @@ def evaluate(data, y_pred, label='salary'):
     recall = recall_score(y_true, y_pred)
     f1 = f1_score(y_true, y_pred)
 
+    f = open('./results/slice_output.txt', 'w')
+    f.write(str(acc) + '\n' +  str(precision) + '\n' + str(recall) + '\n' + str(f1))
+    f.close()
+
     return acc, precision, recall, f1
 
 if __name__ == "__main__": 

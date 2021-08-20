@@ -27,6 +27,7 @@ For additional information see the Model Card paper: https://arxiv.org/pdf/1810.
 - precision
 - recall
 - f1 score 
+- (the metrics are stored in 'results/slice_output.txt')
 
 ## Ethical Considerations
 
