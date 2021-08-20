@@ -1,7 +1,7 @@
 
 import requests
 
-url = 'https://udacity-mldevops3.herokuapp.com:5000'
+url = 'https://udacity-mldevops3.herokuapp.com'
 
 
 
