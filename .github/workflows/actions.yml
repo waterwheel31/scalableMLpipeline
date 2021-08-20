@@ -36,6 +36,7 @@ jobs:
           pip install scikit-learn
           pip install pandas 
           pip install fastapi
+          pip install requests
           if [-f requirements.txt]; then pip install -r requirements.txt; fi
       
       - name: Lint with flake8
