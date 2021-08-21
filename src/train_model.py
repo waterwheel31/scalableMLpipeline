@@ -21,8 +21,6 @@ import joblib
 
 print('files in current path:', os.listdir())
 
-dataPath = 'census_clean.csv'
-data = pd.read_csv(dataPath)
 
 cat_features = [
         "workclass",
@@ -133,6 +131,9 @@ def evaluate(data, y_pred, label='salary'):
     return acc, precision, recall, f1
 
 if __name__ == "__main__": 
+
+    dataPath = 'census_clean.csv'
+    data = pd.read_csv(dataPath)
 
     train_data, test_data = train_test_split(data, test_size=0.20)
     trainedModel = train(train_data)
