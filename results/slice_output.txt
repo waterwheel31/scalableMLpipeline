@@ -1,4 +1,112 @@
-0.8360202671579917
-0.8722397476340694
-0.35909090909090907
-0.5087396504139834
+Feature: education Value:  HS-grad 
+Accuraty: 0.8535898639136555
+Precision: 0.9761904761904762
+Recall: 0.11647727272727272
+F1 Score: 0.2081218274111675
+
+
+Feature: education Value:  Some-college 
+Accuraty: 0.8320819112627986
+Precision: 0.9318181818181818
+Recall: 0.1443661971830986
+F1 Score: 0.25
+
+
+Feature: education Value:  Bachelors 
+Accuraty: 0.7279693486590039
+Precision: 0.8275862068965517
+Recall: 0.4747252747252747
+F1 Score: 0.6033519553072626
+
+
+Feature: education Value:  Masters 
+Accuraty: 0.7319277108433735
+Precision: 0.9043478260869565
+Recall: 0.5714285714285714
+F1 Score: 0.7003367003367004
+
+
+Feature: education Value:  Assoc-voc 
+Accuraty: 0.78125
+Precision: 1.0
+Recall: 0.18840579710144928
+F1 Score: 0.3170731707317073
+
+
+Feature: education Value:  11th 
+Accuraty: 0.9566929133858267
+Precision: 1.0
+Recall: 0.35294117647058826
+F1 Score: 0.5217391304347826
+
+
+Feature: education Value:  Assoc-acdm 
+Accuraty: 0.7955555555555556
+Precision: 1.0
+Recall: 0.14814814814814814
+F1 Score: 0.25806451612903225
+
+
+Feature: education Value:  10th 
+Accuraty: 0.9720670391061452
+Precision: 1.0
+Recall: 0.375
+F1 Score: 0.5454545454545454
+
+
+Feature: education Value:  Prof-school 
+Accuraty: 0.6818181818181818
+Precision: 0.9523809523809523
+Recall: 0.6060606060606061
+F1 Score: 0.7407407407407407
+
+
+Feature: education Value:  7th-8th 
+Accuraty: 0.9444444444444444
+Precision: 0.0
+Recall: 0.0
+F1 Score: 0.0
+
+
+Feature: education Value:  9th 
+Accuraty: 0.9504950495049505
+Precision: 1.0
+Recall: 0.16666666666666666
+F1 Score: 0.2857142857142857
+
+
+Feature: education Value:  Doctorate 
+Accuraty: 0.5949367088607594
+Precision: 0.8611111111111112
+Recall: 0.5344827586206896
+F1 Score: 0.6595744680851064
+
+
+Feature: education Value:  12th 
+Accuraty: 0.935064935064935
+Precision: 1.0
+Recall: 0.16666666666666666
+F1 Score: 0.2857142857142857
+
+
+Feature: education Value:  5th-6th 
+Accuraty: 0.9545454545454546
+Precision: 0.0
+Recall: 0.0
+F1 Score: 0.0
+
+
+Feature: education Value:  1st-4th 
+Accuraty: 0.9714285714285714
+Precision: 0.0
+Recall: 0.0
+F1 Score: 0.0
+
+
+Feature: education Value:  Preschool 
+Accuraty: 1.0
+Precision: 0.0
+Recall: 0.0
+F1 Score: 0.0
+
+

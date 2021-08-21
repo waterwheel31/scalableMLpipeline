@@ -124,11 +124,40 @@ def evaluate(data, y_pred, label='salary'):
     recall = recall_score(y_true, y_pred)
     f1 = f1_score(y_true, y_pred)
 
-    f = open('./results/slice_output.txt', 'w')
-    f.write(str(acc) + '\n' +  str(precision) + '\n' + str(recall) + '\n' + str(f1))
-    f.close()
+    #f = open('./results/evaluation_output.txt', 'w')
+    #f.write(str(acc) + '\n' +  str(precision) + '\n' + str(recall) + '\n' + str(f1))
+    #f.close()
 
     return acc, precision, recall, f1
+
+def sliceEvaluate(data, feature='education'): 
+
+    categoryValues = data[feature].value_counts().index.tolist()
+    clf = joblib.load('./models/randomForest_model.sav')
+
+    outputText = ''
+
+    for category in categoryValues:
+        evalData = data[data[feature] == category]
+        print(category, len(evalData))
+
+        X, y = process_data(evalData, categorical_features=cat_features, label='salary', training=False)
+        y_pred = clf.predict(X)
+
+        acc, precision, recall, f1 = evaluate(evalData, y_pred)
+
+        outputText += 'Feature: {} Value: {} \n'.format(feature, category)
+        outputText += 'Accuraty: {}\n'.format(acc)
+        outputText += 'Precision: {}\n'.format(precision)
+        outputText += 'Recall: {}\n'.format(recall)
+        outputText += 'F1 Score: {}\n'.format(f1)
+        outputText += '\n\n'
+
+    
+    f = open('./results/slice_output.txt', 'w')
+    f.write(outputText)
+    f.close()
+
 
 if __name__ == "__main__": 
 
@@ -144,6 +173,7 @@ if __name__ == "__main__":
     print(y_pred2)
 
     acc, precision, recall, f1 = evaluate(test_data, y_pred)
+    sliceEvaluate(test_data)
 
     print('accuracy:', acc, 'f1:', f1) 
 
