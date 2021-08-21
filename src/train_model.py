@@ -18,6 +18,9 @@ import joblib
 
 # Add code to load in the data.
 #####
+
+print('files in current path:', os.listdir())
+
 dataPath = 'census_clean.csv'
 data = pd.read_csv(dataPath)
 
