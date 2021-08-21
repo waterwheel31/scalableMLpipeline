@@ -1,3 +1,3 @@
-git init
-dvc pull
+web: git init
+web: dvc pull
 web: uvicorn main:app --host=0.0.0.0 --port=${PORT:-5000}
