@@ -131,6 +131,10 @@ if __name__ == "__main__":
     trainedModel = train(train_data)
 
     y_pred = predict(trainedModel, test_data)
+
+    y_pred2 = predict(trainedModel, data)
+    print(y_pred2)
+
     acc, precision, recall, f1 = evaluate(test_data, y_pred)
 
     print('accuracy:', acc, 'f1:', f1) 

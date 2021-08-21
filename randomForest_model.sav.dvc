@@ -1,0 +1,4 @@
+outs:
+- md5: d0eb92a73989b55c8cbe42960a61be59
+  size: 143209
+  path: randomForest_model.sav

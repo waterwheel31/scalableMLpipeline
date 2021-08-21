@@ -23,10 +23,10 @@ For additional information see the Model Card paper: https://arxiv.org/pdf/1810.
 
 ## Metrics
 
-- accuracy
-- precision
-- recall
-- f1 score 
+- accuracy:   0.83
+- precision: 0.88
+- recall: 0.35
+- f1 score: 0.50
 - (the metrics are stored in 'results/slice_output.txt')
 
 ## Ethical Considerations

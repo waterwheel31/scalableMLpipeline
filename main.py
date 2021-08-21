@@ -30,19 +30,19 @@ clf = joblib.load(filename)
 
 class singleData(BaseModel): 
     age: int
-    workclass: str
+    workclass: str = Field(example='Private')
     fnlgt: int
-    education: str
+    education: str = Field(example='Bachelors')
     education_num: int = Field(alias="education-num")
-    marital_status: str = Field(alias="marital-status")
-    occupation: str
-    relationship: str
-    race: str
-    sex: str
+    marital_status: str = Field(alias="marital-status", example="Married-civ-spouse")
+    occupation: str = Field(example="Adm-clerical")
+    relationship: str = Field(example='Wife')
+    race: str = Field(example='White')
+    sex: str = Field(example='Male')
     capital_gain: int = Field(alias="capital-gain")
     capital_loss: int = Field(alias="capital-loss")
     hour_per_week: int = Field(alias="hour-per-week")
-    native_country: str = Field(alias="native-country")
+    native_country: str = Field(alias="native-country", example="United-States")
 
 
 @app.get("/")
